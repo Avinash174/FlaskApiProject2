@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 import random
 import json
 import os
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -49,6 +50,8 @@ async def get_random_book():
 @app.post("/add-book")
 async def add_book(book: str):
     BOOK_DATABASE.append(book)
+    with open(BOOK_FILE, "w") as f:
+         json.dump(BOOK_DATABASE,f)
     return {"message": f"New book '{book}' is added to the database"}
 
 #/get-book?id=....
