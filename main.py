@@ -1,45 +1,54 @@
-from fastapi import FastAPI,HTTPException
+from fastapi import FastAPI, HTTPException
 import random
-app=FastAPI()
+import json
+import os
 
-BOOK_DATABASE=[
+app = FastAPI()
+
+BOOK_FILE = "book.json"
+BOOK_DATABASE = [
     "Great Minds",
-    "Rech Dad Poor Dad",
+    "Rich Dad Poor Dad",
     "Atomic Habits",
     "The Great Gatsby",
     "Indian Great Man"
 ]
 
-# /
+# Load books from file if it exists
 
+if os.path.exists(BOOK_FILE):
+    with open(BOOK_FILE, "r") as f:
+        BOOK_DATABASE = json.load(f)
+
+# Home Route
 @app.get("/")
 async def home():
-    return{"Meassage":"Welcome Book Store"}
+    return {"Message": "Welcome to Book Store"}
 
-#/list-book
-
+# List all books
 @app.get("/list-book")
 async def list_book():
-    return {"books":BOOK_DATABASE}
+    return {"books": BOOK_DATABASE}
 
-#book-by-index/{index}
-
+# Get book by index
 @app.get("/book-by-index/{index}")
-async def book_by_index(index:int):
-    if index <0 or index >=len(BOOK_DATABASE):
-        raise HTTPException(404,f"Index{index} is out of range{len(BOOK_DATABASE)}")
-    else:
-        return {"books":BOOK_DATABASE[index]}
+async def book_by_index(index: int):
+    if index < 0 or index >= len(BOOK_DATABASE):
+        raise HTTPException(404, f"Index {index} is out of range. Total books: {len(BOOK_DATABASE)}")
+    return {"book": BOOK_DATABASE[index]}
 
-#/get-random-book
-
-@app.get('/get-random-book')
+# Get a random book
+@app.get("/get-random-book")
 async def get_random_book():
-    return random.choice(BOOK_DATABASE)
-    
+    return {"book": random.choice(BOOK_DATABASE)}
 
-#/add-book
+# Add a new book
 
 # GET , POST , PATCH , PUT , DELETE   - Api methods
+
+@app.post("/add-book")
+async def add_book(book: str):
+    BOOK_DATABASE.append(book)
+    return {"message": f"New book '{book}' is added to the database"}
 
 #/get-book?id=....
