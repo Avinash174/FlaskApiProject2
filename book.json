@@ -1,1 +1,14 @@
-["Great Minds", "Rich Dad Poor Dad", "Atomic Habits", "The Great Gatsby", "Indian Great Man", "Harry Potter", "Pokemon Part one", "Pokemon With Pickachu"]
+[
+    {
+        "name": "Grreat Man",
+        "price": 101.0,
+        "genre": "fiction",
+        "book_id": "85dd86ad29334b3f9c9726e853d383a0"
+    },
+    {
+        "name": "Hello Book",
+        "price": 50.0,
+        "genre": "fiction",
+        "book_id": "c3ddaa6a73464a1a9188bc3f3f8c38f8"
+    }
+]
